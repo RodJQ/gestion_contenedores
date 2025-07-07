@@ -24,4 +24,34 @@ public class EmpresaController {
         model.addAttribute("empresas", empresas);
         return "empresa/listado";
     }
+    
+    @GetMapping("/empresa/nuevo")
+    public String nuevaEmpresa(Model model) {
+        model.addAttribute("empresa", new Empresa());
+        return "empresa/formulario";
+}
+
+    @PostMapping("/empresa/guardar")
+    public String guardarEmpresa(Empresa empresa) {
+        empresaService.save(empresa);
+        return "redirect:/empresa/listado";
+}
+
+    @GetMapping("/empresa/editar/{id_empresa}")
+    public String editarEmpresa(@PathVariable("id_empresa") Long id_empresa, Model model) {
+        var empresa = new Empresa();
+        empresa.setId_empresa(id_empresa);
+        empresa = empresaService.getEmpresa(empresa);
+        model.addAttribute("empresa", empresa);
+        return "empresa/formulario";
+}
+
+    @GetMapping("/empresa/eliminar/{id_empresa}")
+    public String eliminarEmpresa(@PathVariable("id_empresa") Long id_empresa) {
+        var empresa = new Empresa();
+        empresa.setId_empresa(id_empresa);
+        empresaService.delete(empresa);
+        return "redirect:/empresa/listado";
+}
+
 }
